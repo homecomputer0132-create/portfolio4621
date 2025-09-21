@@ -1383,15 +1383,15 @@
         <!-- Content Sections -->
         <div class="main-content" id="mainContent">
             <!-- Music Section -->
-            <div class="content-section" id="music">
+           <div class="content-section" id="music">
                 <h2 class="section-title">My Music</h2>
                 <div class="music-grid" id="musicGrid"></div>
             </div>
             
             <!-- Photography Section -->
-            <div class="content-section" id="photography">
+           <div class="content-section" id="photography">
                 <h2 class="section-title">Some of My Photography Work </h2>
-             <div class="photo-grid" id="photoGrid"></div>
+                <div class="photo-grid" id="photoGrid"></div>
                 
                 <!-- 3D Gallery Container -->
                 <div class="gallery3d-container" id="gallery3dContainer">
@@ -1402,6 +1402,7 @@
                         <button class="gallery-btn" id="toggle3dView"><i class="fas fa-vector-square"></i></button>
                     </div>
                 </div>
+            </div>
                 
                 <div class="photo-grid">
                     
@@ -1522,7 +1523,7 @@
     </div>
     
     <!-- Music Modal with Visualizer -->
-    <div class="music-modal" id="musicModal">
+   <div class="music-modal" id="musicModal">
         <div class="music-modal-content">
             <button class="close-modal" id="closeMusicModal">
                 <i class="fas fa-times"></i>
@@ -1531,11 +1532,9 @@
             <div class="music-modal-info">
                 <h2 id="songTitle">Song Title</h2>
                 <p id="songInfo">Single • 2025 • 3:45</p>
-                
                 <div class="visualizer-container" id="visualizerContainer">
                     <canvas id="audioVisualizer"></canvas>
                 </div>
-                
                 <div class="music-player">
                     <div class="progress-container" id="progressContainer">
                         <div class="progress" id="progress"></div>
@@ -1560,19 +1559,19 @@
                     <a href="#" class="streaming-link" target="_blank" id="spotifyLink">
                         <i class="fab fa-spotify"></i>
                         <span>Spotify</span>
-                        </a>
-                        <a href="#" class="streaming-link" target="_blank" id="youtubeLink">
-                            <i class="fab fa-youtube"></i>
-                            <span>YouTube</span>
-                            </a>
-                            <a href="#" class="streaming-link" target="_blank" id="appleLink">
-                                <i class="fab fa-apple"></i>
-                                <span>Apple Music</span>
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
+                    </a>
+                    <a href="#" class="streaming-link" target="_blank" id="youtubeLink">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="#" class="streaming-link" target="_blank" id="appleLink">
+                        <i class="fab fa-apple"></i>
+                        <span>Apple Music</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Photo Modal -->
     <div class="photo-modal" id="photoModal">
@@ -1585,8 +1584,9 @@
     </div>
     
     <!-- Audio Elements (hidden) -->
-    <audio id="audioPlayer"></audio>
-    
+     <audio id="audioPlayer"></audio>
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
         // Entry Animation
         const entryScreen = document.getElementById('entryScreen');
@@ -2374,16 +2374,13 @@ function animateVisualizer() {
     if (document.getElementById('themeToggle'))
         document.getElementById('themeToggle').addEventListener('click', updateColors);
 });
-    </script>
-    <!-- Add Supabase JS client library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script>
-    // 1. Configure your Supabase project details
+
+     // Supabase config
     const supabaseUrl = 'https://mowsxolllinofviuevof.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vd3N4b2xsbGlub2Z2aXVldm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0MzQ4MDcsImV4cCI6MjA3NDAxMDgwN30.g48BnaAtshgB3V-ay9W3Er2Un4CZ_qIC468jxP9MzRQ';
     const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // 2. Dynamic song loader
+    // Dynamic music loader
     async function fetchAndRenderSongs() {
       const { data: songs, error } = await supabase.from('songs').select('*').order('year', {ascending:false});
       const grid = document.getElementById('musicGrid');
@@ -2406,7 +2403,7 @@ function animateVisualizer() {
         grid.appendChild(card);
       });
     }
-    // 3. Modal logic for music
+    // Modal logic for music
     function openMusicModal(song) {
       document.getElementById('musicModalImg').src = song.cover_url;
       document.getElementById('songTitle').textContent = song.title;
@@ -2423,7 +2420,8 @@ function animateVisualizer() {
       document.getElementById('musicModal').classList.remove('active');
       document.body.style.overflow = '';
     };
-    // 4. Dynamic photo loader
+
+    // Dynamic photo loader
     async function fetchAndRenderPhotos() {
       const { data: photos, error } = await supabase.from('photos').select('*').order('date', {ascending:false});
       const grid = document.getElementById('photoGrid');
@@ -2461,7 +2459,7 @@ function animateVisualizer() {
         grid.appendChild(card);
       });
     }
-    // 5. Modal logic for photos
+    // Modal logic for photos
     function openPhotoModal(photo) {
       document.getElementById('photoModalImg').src = photo.image_url;
       document.getElementById('photoModal').classList.add('active');
@@ -2471,129 +2469,8 @@ function animateVisualizer() {
       document.getElementById('photoModal').classList.remove('active');
       document.body.style.overflow = '';
     };
-    // 6. Tab show/hide logic (keep as you already had)
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById('music').style.display = this.dataset.tab === 'music' ? '' : 'none';
-        document.getElementById('photography').style.display = this.dataset.tab === 'photography' ? '' : 'none';
-        // ...extend for other tabs as needed...
-      });
-    });
-    // 7. On page load, call your fetchers
-    window.addEventListener('DOMContentLoaded', () => {
-      fetchAndRenderSongs();
-      fetchAndRenderPhotos();
-      document.getElementById('music').style.display = '';
-      document.getElementById('photography').style.display = 'none';
-    });
-    </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script>
-    // 1. Configure your Supabase project details
-    const supabaseUrl = 'https://mowsxolllinofviuevof.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1vd3N4b2xsbGlub2Z2aXVldm9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0MzQ4MDcsImV4cCI6MjA3NDAxMDgwN30.g48BnaAtshgB3V-ay9W3Er2Un4CZ_qIC468jxP9MzRQ';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // 2. Dynamic song loader
-    async function fetchAndRenderSongs() {
-      const { data: songs, error } = await supabase.from('songs').select('*').order('year', {ascending:false});
-      const grid = document.getElementById('musicGrid');
-      grid.innerHTML = '';
-      if (error) {
-        grid.innerHTML = "<p>Failed to load songs.</p>";
-        return;
-      }
-      songs.forEach(song => {
-        const card = document.createElement('div');
-        card.className = 'music-card';
-        card.innerHTML = `
-          <img src="${song.cover_url}" alt="Song Cover">
-          <div class="music-card-info">
-            <h3>${song.title}</h3>
-            <p>${song.album ? song.album : 'Single'} • ${song.year}</p>
-          </div>
-        `;
-        card.addEventListener('click', () => openMusicModal(song));
-        grid.appendChild(card);
-      });
-    }
-    // 3. Modal logic for music
-    function openMusicModal(song) {
-      document.getElementById('musicModalImg').src = song.cover_url;
-      document.getElementById('songTitle').textContent = song.title;
-      document.getElementById('songInfo').textContent = `${song.album ? song.album : 'Single'} • ${song.year}`;
-      const audio = document.getElementById('audioPlayer');
-      audio.src = song.audio_url;
-      document.getElementById('spotifyLink').href = song.spotify ? song.spotify : "#";
-      document.getElementById('youtubeLink').href = song.youtube ? song.youtube : "#";
-      document.getElementById('appleLink').href = song.apple ? song.apple : "#";
-      document.getElementById('musicModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    document.getElementById('closeMusicModal').onclick = () => {
-      document.getElementById('musicModal').classList.remove('active');
-      document.body.style.overflow = '';
-    };
-    // 4. Dynamic photo loader
-    async function fetchAndRenderPhotos() {
-      const { data: photos, error } = await supabase.from('photos').select('*').order('date', {ascending:false});
-      const grid = document.getElementById('photoGrid');
-      grid.innerHTML = '';
-      if (error) {
-        grid.innerHTML = "<p>Failed to load photos.</p>";
-        return;
-      }
-      photos.forEach(photo => {
-        const card = document.createElement('div');
-        card.className = 'instagram-photo-card';
-        card.innerHTML = `
-          <div class="insta-header">
-            <img class="insta-avatar" src="Profile.jpg" alt="Avatar">
-            <span class="insta-username">mrigangka__4621</span>
-            <span class="insta-dot">•</span>
-            <span class="insta-date">${photo.date}</span>
-          </div>
-          <div class="insta-image-container">
-            <img src="${photo.image_url}" alt="Photography Work" class="insta-image">
-          </div>
-          <div class="insta-actions">
-            <button class="insta-action like-btn" data-liked="false"><i class="far fa-heart"></i></button>
-            <button class="insta-action share-btn" title="Share"><i class="far fa-paper-plane"></i></button>
-          </div>
-          <div class="insta-likes">
-            <span class="like-count">${photo.likes ? photo.likes : 0}</span> likes
-          </div>
-          <div class="insta-caption">
-            <span class="insta-username">mrigangka__4621</span>
-            <span class="caption-text">${photo.caption}</span>
-          </div>
-        `;
-        card.querySelector('.insta-image').onclick = () => openPhotoModal(photo);
-        grid.appendChild(card);
-      });
-    }
-    // 5. Modal logic for photos
-    function openPhotoModal(photo) {
-      document.getElementById('photoModalImg').src = photo.image_url;
-      document.getElementById('photoModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    document.getElementById('closePhotoModal').onclick = () => {
-      document.getElementById('photoModal').classList.remove('active');
-      document.body.style.overflow = '';
-    };
-    // 6. Tab show/hide logic (keep as you already had)
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById('music').style.display = this.dataset.tab === 'music' ? '' : 'none';
-        document.getElementById('photography').style.display = this.dataset.tab === 'photography' ? '' : 'none';
-        // ...extend for other tabs as needed...
-      });
-    });
-    // 7. On page load, call your fetchers
+    // On page load
     window.addEventListener('DOMContentLoaded', () => {
       fetchAndRenderSongs();
       fetchAndRenderPhotos();
@@ -2601,5 +2478,6 @@ function animateVisualizer() {
       document.getElementById('photography').style.display = 'none';
     });
     </script>
+    
 </body>
 </html>
