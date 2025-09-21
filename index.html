@@ -1723,52 +1723,7 @@
         let songQueue = ['supreme', 'xopun', 'heer', 'raang'];
         let currentSongIndex = 0;
         
-        // Music Card Click
-        const musicCards = document.querySelectorAll('.music-card');
-        const musicModal = document.getElementById('musicModal');
-        const closeMusicModal = document.getElementById('closeMusicModal');
         
-        musicCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const songId = card.getAttribute('data-song');
-                loadSong(songId);
-                musicModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        
-        closeMusicModal.addEventListener('click', () => {
-            pauseSong();
-            musicModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-        
-        // Load song function
-        function loadSong(songId) {
-            const song = musicData[songId];
-            currentSong = songId;
-            currentSongIndex = songQueue.indexOf(songId);
-            
-            songTitle.textContent = song.title;
-            songInfo.textContent = song.info;
-            musicModalImg.src = song.image;
-            audioPlayer.src = song.audio;
-            document.getElementById('spotifyLink').href = song.links.spotify || "#";
-            document.getElementById('youtubeLink').href = song.links.youtube || "#";
-            document.getElementById('appleLink').href = song.links.apple || "#";
-            
-            // Reset progress
-            progress.style.width = '0%';
-            currentTimeEl.textContent = '0:00';
-            
-            // Load metadata to display duration
-            audioPlayer.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(audioPlayer.duration);
-            });
-            
-            // Play the song
-            playSong();
-        }
         
         // Play song function
         function playSong() {
